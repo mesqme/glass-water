@@ -8,7 +8,7 @@
         "https:setup": "node scripts/setup-https.mjs",
         "https:certificate": "node scripts/serve-certificate.mjs",
         "build": "vite build",
-        "package:site": "npm run build && mkdir -p artifacts && COPYFILE_DISABLE=1 tar -czf artifacts/globe-tsl-blocks.tar.gz -C dist .",
+        "package:site": "npm run build && mkdir -p artifacts && COPYFILE_DISABLE=1 tar --no-xattrs --no-acls -czf artifacts/globe-tsl-blocks.tar.gz -C dist .",
         "preview": "vite preview",
         "test": "node --test tests/*.test.js"
     },

@@ -72,4 +72,6 @@ Flow trace keeps the full globe. Trace saturation adjusts line colors independen
 
 ## Phone motion
 
-Motion starts automatically where supported. Where permission requires a gesture, the first touch of the globe or a view button triggers the browser request. The debug panel reports sensor status. Both motion APIs need trusted HTTPS on the LAN; see the setup steps in the README.
+Motion starts automatically where supported. Where permission requires a gesture, the first touch of the globe or a view button triggers the browser request. The debug panel reports sensor status.
+
+For local phone testing, run `npm run https:setup` and `npm run https:certificate`. Download the public CA certificate from `http://<your-LAN-IP>:5175/snow-globe.cer` on the phone and install it. On iPhone, enable its full trust under Settings → General → About → Certificate Trust Settings. Restart `npm run dev` and use its HTTPS Network URL. Stop the certificate server after installation. The generated certificates stay in the ignored `.certs/` folder; re-run setup if your LAN IP changes. The deployed site uses the server’s existing HTTPS certificate.
