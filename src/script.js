@@ -1,4 +1,3 @@
-import './style.css'
 import * as THREE from 'three/webgpu'
 import { screenUV, texture, uniform, vec3, vec4 } from 'three/tsl'
 import { createEnvironment } from './experience/scene/Environment.js'
@@ -14,6 +13,7 @@ import { KnotRefraction } from './experience/rendering/KnotRefraction.js'
 import { FlowDebug } from './experience/rendering/FlowDebug.js'
 import { frameCamera } from './experience/scene/CameraFraming.js'
 import { PhoneMotion } from './experience/input/PhoneMotion.js'
+import { finishLoading, failLoading } from './experience/ui/Loading.js'
 
 /**
  * Base
@@ -49,6 +49,14 @@ let environment, globe, snow, pane, knotRefraction, waterOptics, blocksDepthMate
 let flowDebug
 let particleMaterialDirty = false, layeredGlass = false
 let panelRevision = 0
+const motionStatus = document.querySelector('.motion-status')
+const phone = new PhoneMotion(settings.mobile, status =>
+{
+    stats.motion = status
+    motionStatus.textContent = status
+    motionStatus.hidden = status === 'Motion on' || status === 'Motion off'
+}, () => { snow?.wake(); interacted = true })
+if(mobileLayout || navigator.maxTouchPoints > 0) phone.start()
 
 /**
  * Camera and renderer
@@ -192,7 +200,6 @@ function createSnow()
 }
 createSnow()
 applyVisual(); applyRendering(); globe.update(motion, camera); flow.update(motion, 0)
-const phone = new PhoneMotion(settings.mobile, status => { stats.motion = status }, () => { snow?.wake(); interacted = true })
 const viewControls = document.querySelector('.view-controls')
 function changeView()
 {
@@ -208,7 +215,6 @@ function onViewClick(event)
     if(button) { settings.scene.view = button.dataset.view; changeView() }
 }
 viewControls.addEventListener('click', onViewClick)
-if(mobileLayout) phone.start()
 const controlActions = {
     view: changeView,
     inspector: () =>
@@ -300,6 +306,7 @@ renderer.setAnimationLoop(async () =>
         if(flowDebug?.root.visible) flowDebug.render(renderer, camera)
         renderer.setRenderTarget(null)
         output.render()
+        finishLoading()
         frames++; sampleTime += rawDt
         if(sampleTime >= 1)
         {
@@ -322,6 +329,7 @@ renderer.setAnimationLoop(async () =>
         console.error('Snow globe frame failed.', error)
         renderer.setAnimationLoop(null)
         stats.state = 'Stopped: rendering error'
+        failLoading()
     }
     finally { performanceInspector?.endFrame(); busy = false; if(disposed) releaseResources() }
 })

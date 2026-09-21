@@ -1,5 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
+import { setImmediate } from 'node:timers/promises'
 import { PhoneMotion } from '../src/experience/input/PhoneMotion.js'
 import { createSettings } from '../src/experience/config/Settings.js'
 
@@ -20,6 +21,14 @@ function environment(t, requestPermission)
     return { phone, statuses, window }
 }
 
+async function gesture(type, matches = true)
+{
+    const event = new Event(type)
+    Object.defineProperty(event, 'target', { value: { closest: () => matches } })
+    document.dispatchEvent(event)
+    await setImmediate()
+}
+
 test('sensors start automatically when no gesture permission API is needed', async t =>
 {
     const { phone } = environment(t)
@@ -33,14 +42,48 @@ test('gesture-gated sensors wait for interaction, request both APIs once, and re
     const { phone, statuses } = environment(t, () => { requests++; return Promise.resolve('denied') })
     phone.start()
     assert.equal(requests, 0)
-    await phone.permissionGesture({ target: { closest: () => false } })
+    await gesture('touchend', false)
     assert.equal(requests, 0, 'debug panel interactions do not trigger sensor prompts')
-    await phone.permissionGesture({ target: { closest: () => true } })
+    await gesture('touchend')
     assert.equal(requests, 2)
     assert.equal(phone.enabled, false)
     assert.match(statuses.at(-1), /denied/)
-    document.dispatchEvent(new Event('pointerup'))
+    await gesture('click')
+    await gesture('touchend')
     assert.equal(requests, 2, 'no repeated prompts on later touches')
+})
+
+test('a rejected gesture request can retry on the next tap', async t =>
+{
+    let requests = 0, reject = true
+    const { phone, statuses } = environment(t, () =>
+    {
+        requests++
+        if(reject) throw new DOMException('User activation required', 'NotAllowedError')
+        return Promise.resolve('granted')
+    })
+    phone.start()
+    await gesture('touchend')
+    assert.equal(phone.enabled, false)
+    assert.match(statuses.at(-1), /Tap again.*NotAllowedError/)
+    reject = false
+    await gesture('click')
+    assert.equal(phone.enabled, true)
+    assert.equal(requests, 4)
+    await gesture('touchend')
+    assert.equal(requests, 4, 'successful permission removes gesture listeners')
+})
+
+test('one rejected sensor does not discard the other sensor permission or data', async t =>
+{
+    const { phone, statuses, window } = environment(t, () => Promise.resolve('granted'))
+    window.DeviceMotionEvent.requestPermission = () => Promise.reject(new Error('Unavailable'))
+    phone.start()
+    await gesture('click')
+    assert.equal(phone.enabled, true)
+    window.dispatchEvent(Object.assign(new Event('deviceorientation'), { beta: 90, gamma: 30 }))
+    assert.equal(phone.input.hasOrientation, true)
+    assert.equal(statuses.at(-1), 'Motion on')
 })
 
 test('disposing during a permission prompt does not attach sensor listeners afterward', async t =>

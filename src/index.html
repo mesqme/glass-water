@@ -8,8 +8,10 @@
         <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     </head>
     <body>
+        <div class="loader" role="status" aria-label="Loading snow globe"></div>
         <canvas class="threejs" aria-label="A glass snow globe filled with water. Move your cursor or swipe to shake the snow. Hold the left mouse button to turn the globe upside down; release to spring upright."></canvas>
         <nav class="view-controls" aria-label="Scene views">
+            <p class="motion-status" role="status" hidden></p>
             <div class="view-buttons" role="group" aria-label="View mode">
                 <button type="button" data-view="snow" aria-pressed="true">Snow</button>
                 <button type="button" data-view="flowParticles" aria-pressed="false">Flow particles</button>
@@ -18,6 +20,6 @@
                 <button type="button" data-view="activity" aria-pressed="false">Activity</button>
             </div>
         </nav>
-        <script type="module" src="./script.js"></script>
+        <script type="module" src="./main.js"></script>
     </body>
 </html>

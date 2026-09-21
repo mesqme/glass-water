@@ -125,7 +125,6 @@ export class PhoneMotion
         this.permissionGesture = event =>
         {
             if(!event.target.closest?.('.threejs, .view-controls')) return
-            this.removePermissionGesture()
             return this.enable()
         }
     }
@@ -147,16 +146,16 @@ export class PhoneMotion
         if(!APIs.length) { this.onStatus('Sensors unavailable · swipe to shake'); return }
         if(APIs.some(API => typeof API.requestPermission === 'function'))
         {
-            this.onStatus('Touch the globe to allow motion')
-            document.addEventListener('pointerup', this.permissionGesture, true)
+            this.onStatus('Tap the globe to allow motion')
+            document.addEventListener('touchend', this.permissionGesture, true)
             document.addEventListener('click', this.permissionGesture, true)
         }
         else return this.enable()
     }
     removePermissionGesture()
     {
-        document.removeEventListener('pointerup', this.permissionGesture, true)
-        document.removeEventListener('click', this.permissionGesture, true)
+        document.removeEventListener('touchend', this.permissionGesture, { capture: true })
+        document.removeEventListener('click', this.permissionGesture, { capture: true })
     }
     async enable()
     {
@@ -165,10 +164,22 @@ export class PhoneMotion
         this.requesting = true
         try
         {
-            // Both calls begin inside the click gesture, before the first await.
-            const results = await Promise.all(APIs.map(API => typeof API.requestPermission === 'function' ? API.requestPermission() : Promise.resolve('granted')))
-            if(results.some(result => result !== 'granted')) { this.onStatus('Motion permission denied · swipe to shake'); return }
+            // Start both requests inside the gesture. One unavailable sensor
+            // must not discard permission granted for the other.
+            const results = await Promise.allSettled(APIs.map(async API => typeof API.requestPermission === 'function' ? API.requestPermission() : 'granted'))
             if(this.disposed) return
+            if(!results.some(result => result.status === 'fulfilled' && result.value === 'granted'))
+            {
+                const failed = results.find(result => result.status === 'rejected')
+                if(failed) this.onStatus(`Tap again to allow motion (${failed.reason?.name ?? 'request failed'})`)
+                else
+                {
+                    this.removePermissionGesture()
+                    this.onStatus('Motion denied · allow Motion & Orientation in site settings')
+                }
+                return
+            }
+            this.removePermissionGesture()
             this.enabled = true
             this.received = false
             this.input.reset()
@@ -179,7 +190,6 @@ export class PhoneMotion
             this.onStatus('Waiting for sensors…')
             this.timeout = setTimeout(() => { if(!this.received) this.onStatus('No sensor data · swipe to shake') }, 4000)
         }
-        catch { this.onStatus('Motion unavailable · swipe to shake') }
         finally { this.requesting = false }
     }
     step(motion, camera, dt)
