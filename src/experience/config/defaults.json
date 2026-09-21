@@ -1,0 +1,150 @@
+{
+    "scene": {
+        "background": "#000000",
+        "exposure": 1.82,
+        "environment": 0.7,
+        "antialias": true,
+        "pixelRatio": 1.5,
+        "autoQuality": true,
+        "view": "snow"
+    },
+    "glass": {
+        "color": "#ffffff",
+        "transmission": 1,
+        "ior": 1.62,
+        "thickness": 0.09,
+        "roughness": 0,
+        "dispersion": 3.26,
+        "chromaticAberration": 0.174,
+        "clearcoat": 1,
+        "attenuationColor": "#dbe8f3",
+        "attenuationDistance": 0.34,
+        "envMapIntensity": 1.2,
+        "clearcoatRoughness": 0.57,
+        "samples": 1,
+        "specularIntensity": 0.26
+    },
+    "water": {
+        "thickness": 0.165,
+        "roughness": 0,
+        "envMapIntensity": 0.49,
+        "specularIntensity": 1,
+        "depthClarity": true,
+        "clearDepth": -0.185,
+        "depthEnd": 3.03,
+        "depthCurve": "smoothstep",
+        "depthFalloff": 0.35,
+        "depthSoftness": 0.2,
+        "blurDepthFalloff": 3,
+        "depthPreview": "distance",
+        "enabled": true,
+        "fadeColor": "#000000",
+        "fadeStrength": 4.1833
+    },
+    "knot": {
+        "material": "glass",
+        "color": "#000000",
+        "metalness": 0.8,
+        "roughness": 0.25,
+        "envMapIntensity": 1,
+        "clearcoat": 0.35,
+        "clearcoatRoughness": 0.16,
+        "glass": {
+            "color": "#ffffff",
+            "transmission": 1,
+            "ior": 1.47,
+            "thickness": 1,
+            "roughness": 0.087,
+            "attenuationColor": "#d9eef5",
+            "attenuationDistance": 10.12,
+            "dispersion": 0.75,
+            "chromaticAberration": 0.049,
+            "envMapIntensity": 1.96,
+            "clearcoat": 0.64,
+            "clearcoatRoughness": 0.23,
+            "samples": 1,
+            "specularIntensity": 1
+        },
+        "scale": 1.05,
+        "autoRotate": true,
+        "axisX": false,
+        "axisY": true,
+        "axisZ": true,
+        "speed": 90,
+        "specularIntensity": 1
+    },
+    "snow": {
+        "count": 12288,
+        "radius": 0.035,
+        "variation": 0,
+        "color": "#edf5ff",
+        "brightness": 1.05
+    },
+    "simulation": {
+        "paused": false,
+        "fallSpeed": 0.4,
+        "drag": 4.5,
+        "inertia": 1,
+        "restitution": 0.2,
+        "impactThreshold": 0.08,
+        "iterations": 2,
+        "viscosity": 0.08,
+        "kernelRadius": 0.11,
+        "restSpacing": 0.035,
+        "maxSpeed": 2,
+        "substeps": 1,
+        "currentStrength": 1.5,
+        "turbulence": 0.3,
+        "sleep": true,
+        "sleepSpeed": 0.075,
+        "sleepDelay": 0.8,
+        "knotStirring": 1
+    },
+    "motion": {
+        "sensitivity": 1.2,
+        "shake": 1,
+        "decay": 0.3,
+        "elasticity": 80,
+        "damping": 8,
+        "holdRotation": true,
+        "turnAngle": 180,
+        "turnSpeed": 240,
+        "turnSpring": 28,
+        "turnDamping": 6
+    },
+    "debug": {
+        "mode": 0,
+        "saturation": 1.5
+    },
+    "base": {
+        "color": "#000000",
+        "roughness": 0.24,
+        "metalness": 0.05
+    },
+    "flow": {
+        "count": 192,
+        "duration": 0.8,
+        "brightness": 1,
+        "slice": "all",
+        "offset": 0,
+        "width": 0.5,
+        "particles": false,
+        "saturation": 2
+    },
+    "activity": {
+        "gain": 1.5,
+        "curve": 0.7,
+        "minimum": 0.015,
+        "speedFloor": 0.04,
+        "smoothing": 0.16
+    },
+    "mobile": {
+        "tilt": 1,
+        "shake": 1
+    },
+    "revision": 5,
+    "ground": {
+        "color": "#ebebeb",
+        "intensity": 0.39
+    }
+}

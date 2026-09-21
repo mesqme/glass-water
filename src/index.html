@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+        <meta name="theme-color" content="#000000">
+        <title>Snow globe</title>
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    </head>
+    <body>
+        <canvas class="threejs" aria-label="A glass snow globe filled with water. Move your cursor or swipe to shake the snow. Hold the left mouse button to turn the globe upside down; release to spring upright."></canvas>
+        <nav class="view-controls" aria-label="Scene views">
+            <div class="view-buttons" role="group" aria-label="View mode">
+                <button type="button" data-view="snow" aria-pressed="true">Snow</button>
+                <button type="button" data-view="flowParticles" aria-pressed="false">Flow particles</button>
+                <button type="button" data-view="flow" aria-pressed="false">Flow trace</button>
+                <button type="button" data-view="depth" aria-pressed="false">Depth</button>
+                <button type="button" data-view="activity" aria-pressed="false">Activity</button>
+            </div>
+        </nav>
+        <script type="module" src="./script.js"></script>
+    </body>
+</html>

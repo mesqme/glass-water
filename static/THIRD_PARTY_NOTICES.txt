@@ -1,0 +1,18 @@
+Three.js Blocks (https://threejs-blocks.com)
+Copyright (c) 2025-2026 ロリンジャー株式会社 (Rohlinger K.K.)
+Licensed under PolyForm Noncommercial 1.0.0
+https://polyformproject.org/licenses/noncommercial/1.0.0/
+The full license is included in THREE-BLOCKS-LICENSE.txt.
+
+Required Notice: Copyright (c) 2025-2026 ロリンジャー株式会社 (Rohlinger K.K.),
+doing business as Three.js Blocks (https://threejs-blocks.com)
+
+Commercial project licenses: https://threejs-blocks.com/license
+
+Three.js
+Copyright © 2010-2026 three.js authors
+Licensed under the MIT License. See THREE-LICENSE.txt.
+
+Tweakpane 4.0.5
+Copyright (c) 2016 cocopon
+Licensed under the MIT License. See TWEAKPANE-LICENSE.txt.

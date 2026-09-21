@@ -1,0 +1,30 @@
+# Dependencies and generated output
+node_modules/
+dist/
+artifacts/
+coverage/
+.vite/
+.vite-temp/
+*.tsbuildinfo
+
+# Local configuration and HTTPS certificates
+.env
+.env.*
+!.env.example
+.certs/
+*.pem
+*.key
+
+# Logs and editor/OS files
+*.log
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+*.swo
+.DS_Store
+._*
+Thumbs.db
+
+# Reference lesson archive
+88-tsl-snow-final (1).zip
